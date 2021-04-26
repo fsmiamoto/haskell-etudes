@@ -1,10 +1,12 @@
 module List where
 
-data Pair a b = Pair a b
-
 data Empty
 
-data ListInt = Empty | ListInt Int ListInt deriving (Show,Eq)
+data ListInt = Empty | ListInt Int ListInt 
+
+instance Show ListInt where
+    show Empty = "]"
+    show (ListInt h t) = "[" ++ show h ++ "," ++ show t
 
 hd :: ListInt -> Int
 hd Empty = error "can't get head of empty list"
