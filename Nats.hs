@@ -8,5 +8,9 @@ plus n (Succ m) = plus (Succ n) m
 
 instance (Show Nat) where 
     show Zero = "O"
-    show (Succ m) = "S" ++ show m
+    show (Succ m) = 'S' : show m
+
+len :: [a] -> Nat
+len [] = Zero
+len (_:t) = Succ (len t)
 
