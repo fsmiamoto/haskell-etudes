@@ -159,8 +159,13 @@ sg (Succ x) = Succ Zero
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
-lo = undefined -- TODO
-
+lo _ Zero = error "log of Zero"
+lo Zero _ = error "log base zero"
+lo x (Succ Zero) = Zero
+lo x y
+    | x > y = Zero
+    | x == y = Succ Zero
+    | x < y = Succ Zero + lo x (y </> x)
 
 --
 -- For the following functions we need Num(..).
