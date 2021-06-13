@@ -15,3 +15,7 @@ hd (ListInt h _)= h
 tl :: ListInt -> ListInt
 tl Empty = error "can't get tail of empty list"
 tl (ListInt _ t) = t
+
+reverse :: [a] -> [a]
+reverse [] = []
+reverse (x:xs) = xs' ++ [x] where xs' = List.reverse xs

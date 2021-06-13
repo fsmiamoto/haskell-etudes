@@ -100,7 +100,7 @@ take n (x:xs) = x : take (n-1) xs
 drop :: Integral a => a -> [b] -> [b]
 drop _ [] = []
 drop 0 xs = xs
-drop n (x:xs) = drop (n-1) xs
+drop n (_:xs) = drop (n-1) xs
 
 -- takeWhile
 -- dropWhile
