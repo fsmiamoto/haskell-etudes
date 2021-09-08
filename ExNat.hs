@@ -27,6 +27,8 @@ import Prelude
 
 data Nat = Zero | Succ Nat
 
+data Maybe a = Ok a  | Nok
+
 instance Show Nat where
 
     -- zero  should be shown as O
@@ -65,6 +67,19 @@ instance Ord Nat where
 isZero :: Nat -> Bool
 isZero Zero = True
 isZero _ = False
+
+bottom :: a
+bottom = bottom;
+
+atleast :: Nat -> Nat
+atleast Zero = bottom
+atleast (Succ n) = Succ (atleast n)
+
+atleastTwo :: Nat
+atleastTwo = Succ (Succ bottom)
+
+infinity :: Nat
+infinity = Succ infinity
 
 -- pred is the predecessor but we define zero's to be zero
 pred :: Nat -> Nat
