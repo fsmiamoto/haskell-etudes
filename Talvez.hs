@@ -5,14 +5,11 @@ import Prelude hiding ( Maybe(..) )
 data Maybe a = Nothing | Just a deriving (Show, Eq)
 
 firstThat :: (a -> Bool) -> [a] -> Maybe a
-firstThat pred xs = safeHead $ filter pred xs
-
-safeHead :: [a] -> Maybe a
-safeHead []     = Nothing
-safeHead (x:xs) = Just x
+firstThat _ []     = Nothing
+firstThat p (x:xs) =  if p x then Just x else firstThat p xs
 
 isGoodFirstThat :: (a -> Bool) -> (a -> Bool) -> [a] -> Maybe Bool
-isGoodFirstThat filter pred xs =
-    case firstThat pred xs of
-        Just value -> Just $ filter value
+isGoodFirstThat isgood p xs =
+    case firstThat p xs of
+        Just x -> Just $ isgood x
         _ -> Nothing
