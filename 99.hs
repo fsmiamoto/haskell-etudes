@@ -17,3 +17,10 @@ myButLast (_:xs) = myButLast xs
 myButLast' = last . init
 
 myButLast'' = head . tail . reverse
+
+-- Problem 3
+
+elementAt :: [a] -> Int -> a
+elementAt [] _ = error "Empty list"
+elementAt (x:_) 1 = x
+elementAt (_:xs) index = elementAt xs (index-1)
