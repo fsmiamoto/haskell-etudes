@@ -55,3 +55,17 @@ flatten (List xs) = foldl (++) [] (map flatten xs)
 
 flatten' (Elem x ) = [x]
 flatten' (List xs) = concatMap flatten xs
+
+-- Problem 8
+compress :: Eq a => [a] -> [a]
+compress = foldr addIfMissing []
+    where 
+        addIfMissing x [] = [x]
+        addIfMissing x ys'@(y:ys)
+            | x == y = ys' 
+            | otherwise = (x:ys')
+
+compress' (x:ys@(y:_))
+    | x == y = compress' ys
+    | otherwise = x : compress' ys
+compress' ys = ys
