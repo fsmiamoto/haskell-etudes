@@ -46,3 +46,12 @@ myReverse' xs = last xs : myReverse' (init xs)
 -- Problem 6
 isPalindrome xs = xs == xs' where xs' = myReverse xs
 
+-- Problem 7
+data NestedList a = Elem a | List [NestedList a]
+
+flatten :: NestedList a -> [a]
+flatten (Elem a) = [a]
+flatten (List xs) = foldl (++) [] (map flatten xs)
+
+flatten' (Elem x ) = [x]
+flatten' (List xs) = concatMap flatten xs
