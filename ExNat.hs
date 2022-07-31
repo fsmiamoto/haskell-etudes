@@ -206,4 +206,3 @@ instance Num Nat where
     fromInteger x
         | x < 0     = error "Nat can only be positive"
         | otherwise = toNat x
-

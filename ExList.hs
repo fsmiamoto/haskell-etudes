@@ -1,16 +1,32 @@
 module ExList where
 
-import Prelude
-    ( Char , String , Int , Integer , Double , Float , Bool(..)
-    , Num(..) , Integral(..) , Enum(..) , Ord(..) , Eq(..)
-    , not , (&&) , (||)
-    , (.) , ($)
-    , curry , uncurry
-    , otherwise , error , undefined
-    )
-import qualified Prelude   as P
-import qualified Data.List as L
 import qualified Data.Char as C
+import qualified Data.List as L
+import Prelude
+  ( Bool (..),
+    Char,
+    Double,
+    Enum (..),
+    Eq (..),
+    Float,
+    Int,
+    Integer,
+    Integral (..),
+    Num (..),
+    Ord (..),
+    String,
+    curry,
+    error,
+    not,
+    otherwise,
+    uncurry,
+    undefined,
+    ($),
+    (&&),
+    (.),
+    (||),
+  )
+import qualified Prelude as P
 
 -- to use a function from a qualified import
 -- you need to prefix its name with its alias
@@ -23,10 +39,10 @@ import qualified Data.Char as C
 
 head :: [a] -> a
 head [] = error "no head for empty list"
-head (x:_)= x
+head (x : _) = x
 
 tail :: [a] -> [a]
-tail xs = if null xs then error "boom" else t where (_:t) = xs
+tail xs = if null xs then error "boom" else t where (_ : t) = xs
 
 null :: [a] -> Bool
 null [] = True
@@ -34,28 +50,28 @@ null _ = False
 
 length :: Integral i => [a] -> i
 length [] = 0
-length (x:xs) = 1 + length xs
+length (x : xs) = 1 + length xs
 
 sum :: Num a => [a] -> a
 sum [] = 0
-sum (_:xs) = 1 + sum xs 
+sum (_ : xs) = 1 + sum xs
 
 product :: Num a => [a] -> a
 product [] = 1
-product (x:xs) = x * product xs
+product (x : xs) = x * product xs
 
 reverse :: [a] -> [a]
 reverse [] = []
-reverse (x:xs) = append x xs' where xs' = reverse xs
+reverse (x : xs) = append x xs' where xs' = reverse xs
 
 append :: a -> [a] -> [a]
 append x [] = [x]
-append x (y:ys) = y : append x ys
+append x (y : ys) = y : append x ys
 
 (++) :: [a] -> [a] -> [a]
 x ++ [] = x
 [] ++ y = y
-x ++ (y:ys) = append y x ++ ys
+x ++ (y : ys) = append y x ++ ys
 
 -- right-associative for performance!
 -- (what?!)
@@ -64,7 +80,7 @@ infixr 5 ++
 -- (snoc is cons written backwards)
 snoc :: a -> [a] -> [a]
 snoc x [] = [x]
-snoc v (x:xs) = x : snoc v xs
+snoc v (x : xs) = x : snoc v xs
 
 flip :: (a -> b -> c) -> b -> a -> c
 flip f a b = f b a
@@ -74,9 +90,9 @@ flip f a b = f b a
 
 -- different implementation of (++)
 (+++) :: [a] -> [a] -> [a]
-xs +++ []     = xs
-xs +++ [y]    = xs <: y
-xs +++ (y:ys) = (xs +++ [y]) +++ ys
+xs +++ [] = xs
+xs +++ [y] = xs <: y
+xs +++ (y : ys) = (xs +++ [y]) +++ ys
 
 -- left-associative for performance!
 -- (hmm?)
@@ -85,29 +101,45 @@ infixl 5 +++
 minimum :: Ord a => [a] -> a
 minimum [] = error "empty list"
 minimum [x] = x
-minimum (x:xs) = min x (minimum xs)
+minimum (x : xs) = min x (minimum xs)
 
 maximum :: Ord a => [a] -> a
 maximum [] = error "empty list"
 maximum [x] = x
-maximum (x:xs) = max x (maximum xs)
+maximum (x : xs) = max x (maximum xs)
 
 take :: Integral a => a -> [b] -> [b]
 take _ [] = []
 take 0 _ = []
-take n (x:xs) = x : take (n-1) xs 
+take n (x : xs) = x : take (n - 1) xs
 
 drop :: Integral a => a -> [b] -> [b]
 drop _ [] = []
 drop 0 xs = xs
-drop n (_:xs) = drop (n-1) xs
+drop n (_ : xs) = drop (n - 1) xs
 
--- takeWhile
--- dropWhile
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile _ [] = []
+takeWhile pred (x : xs) = if pred x then x : takeWhile pred xs else []
 
--- tails
--- init
--- inits
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile _ [] = []
+dropWhile pred (x : xs) = if pred x then dropWhile pred xs else xs
+
+tails :: [a] -> [[a]]
+tails [] = [[]]
+tails l = l : tails (tail l)
+
+inits :: [a] -> [[a]]
+inits [] = [[]]
+inits (x : xs) = [] : map (x :) (inits xs)
+
+subsequences :: [a] -> [[a]]
+subsequences [] = [[]]
+subsequences (x : xs) =
+  map (x :) xs' ++ xs'
+  where
+    xs' = subsequences xs
 
 -- subsequences
 
@@ -128,6 +160,9 @@ drop n (_:xs) = drop (n-1) xs
 
 -- filter
 -- map
+map :: (a -> b) -> [a] -> [b]
+map _ [] = []
+map f (x : xs) = f x : map f xs
 
 -- cycle
 -- repeat
@@ -171,4 +206,3 @@ Examples of palindromes:
 "Doc, note I dissent.  A fast never prevents a fatness.  I diet on cod."
 
 -}
-
