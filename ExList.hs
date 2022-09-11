@@ -141,25 +141,67 @@ subsequences (x : xs) =
   where
     xs' = subsequences xs
 
--- subsequences
+any :: (a -> Bool) -> [a] -> Bool
+any _ [] = False
+any f (x : xs) = f x || any f xs
 
--- any
--- all
+any' :: (a -> Bool) -> [a] -> Bool
+any' f = P.foldl (||) False . map f
+
+any'' :: (a -> Bool) -> [a] -> Bool
+any'' f = P.or . map f
+
+all :: (a -> Bool) -> [a] -> Bool
+all _ [] = True
+all f (x : xs) = f x && all f xs
+
+all' :: (a -> Bool) -> [a] -> Bool
+all' f = P.foldl (&&) True . map f
+
+all'' :: (a -> Bool) -> [a] -> Bool
+all'' f = P.and . map f
 
 -- and
 -- or
 
+and :: [Bool] -> Bool
+and [] = True
+and (x : xs) = x && and xs
+
+and' :: [Bool] -> Bool
+and' = P.foldl (&&) True
+
+or :: [Bool] -> Bool
+or [] = False
+or (x : xs) = x || or xs
+
+or' :: [Bool] -> Bool
+or' = P.foldl (||) False
+
 -- concat
+concat :: [[a]] -> [a]
+concat [] = []
+concat (x : xs) = x ++ concat xs
+
+concat' :: [[a]] -> [a]
+concat' = P.foldr (++) []
 
 -- elem using the funciton 'any' above
+elem :: Eq a => a -> [a] -> Bool
+elem x [] = False
+elem x (y : ys) = x == y || elem x ys
 
--- elem': same as elem but elementary definition
--- (without using other functions except (==))
+elem' :: Eq a => a -> [a] -> Bool
+elem' x = any $ \y -> x == y
 
--- (!!)
+(!!) :: [a] -> Int -> a
+(!!) xs 0 = head xs
+(!!) (_ : xs) i = (!!) xs (i - 1)
 
--- filter
--- map
+filter :: (a -> Bool) -> [a] -> [a]
+filter _ [] = []
+filter f (x : xs) = if f x then x : filter f xs else filter f xs
+
 map :: (a -> b) -> [a] -> [b]
 map _ [] = []
 map f (x : xs) = f x : map f xs
